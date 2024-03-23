@@ -1,4 +1,5 @@
 import streamlit as st
+from cadastro import show_cadastro
+from databases import adicionar_cliente
 
-st.page_link("cadastro.py", label="Cadastro de Capacitação")
-st.page_link("dados.py", label="Cadastro de Capacitação")
+st.sidebar.subpage("Cadastro de Capacitação", show_cadastro(adicionar_cliente))

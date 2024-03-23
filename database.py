@@ -1,29 +1,27 @@
-import streamlit as st
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base  # Apenas importa a Base, não é necessário importar Cliente
+from models import Base, Cliente
 
-# Função para criar a tabela no banco de dados
-def criar_tabela_clientes():
+# Função para adicionar um cliente ao banco de dados
+def adicionar_cliente(nome, matricula, setor, diretoria, regiao, nome_da_capacitacao, email):
     try:
         # Criar engine para se conectar ao banco de dados
-        engine = create_engine('mysql://seu_usuario:sua_senha@seu_host/seu_banco_de_dados')
+        engine = create_engine('mysql://admin:Ckarlos36/database-1.cluster-c5wag6so2stq.us-east-2.rds.amazonaws.com')
 
-        # Criar todas as tabelas definidas em Base
-        Base.metadata.create_all(engine)
+        # Criar uma sessão
+        Session = sessionmaker(bind=engine)
+        session = Session()
 
-        st.success("Tabela 'clientes' criada com sucesso!")
+        # Criar um novo cliente
+        novo_cliente = Cliente(nome=nome, matricula=matricula, setor=setor, diretoria=diretoria, regiao=regiao, nomeDaCapacitacao=nome_da_capacitacao, email=email)
+
+        # Adicionar o cliente à sessão
+        session.add(novo_cliente)
+
+        # Commit para salvar no banco de dados
+        session.commit()
+
+        session.close()
+
     except Exception as e:
-        st.error(f"Erro ao criar tabela: {e}")
-
-# Aplicativo Streamlit
-def main():
-    st.title("Criação de Tabela no Banco de Dados")
-
-    # Botão para criar a tabela
-    if st.button("Criar Tabela 'clientes'"):
-        criar_tabela_clientes()
-
-# Execução do aplicativo
-if __name__ == "__main__":
-    main()
+        print(f"Erro ao adicionar cliente: {e}")

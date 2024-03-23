@@ -8,7 +8,7 @@ class Cliente(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100))
-    matricula = Column(Integer)
+    matricula = Column(String(100))
     setor = Column(String(100))
     diretoria = Column(String(100))
     regiao = Column(String(100))
